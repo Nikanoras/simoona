@@ -1,4 +1,4 @@
-roslynator_compiler_diagnostic_fixes.enabled = disable
+roslynator_compiler_diagnostic_fixes.enabled = false
 dotnet_diagnostic.RCS1002.severity = suggestion
 dotnet_diagnostic.RCS1003.severity = suggestion
 dotnet_diagnostic.RCS1005.severity = suggestion
