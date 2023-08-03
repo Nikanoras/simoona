@@ -46,19 +46,23 @@ namespace Shrooms.Premium.Presentation.WebViewModels.ValidationAttributes.Events
 
         private static void CheckIfPropertyFound(System.Reflection.PropertyInfo property)
         {
-            if (property == null)
+            if (property != null)
             {
-                throw new ArgumentException($"Provided comparison property is not found");
+                return;
             }
+
+            throw new ArgumentException($"Provided comparison property is not found");
         }
 
         private static void CheckIfValueIsEventRecurrenceOption(object propertyValue)
         {
             var type = propertyValue?.GetType();
-            if (type != typeof(EventRecurrenceOptions))
+            if (type == typeof(EventRecurrenceOptions))
             {
-                throw new ArgumentException($"Provided property is not of type {nameof(EventRecurrenceOptions)} but of type {type}");
+                return;
             }
+
+            throw new ArgumentException($"Provided property is not of type {nameof(EventRecurrenceOptions)} but of type {type}");
         }
     }
 }

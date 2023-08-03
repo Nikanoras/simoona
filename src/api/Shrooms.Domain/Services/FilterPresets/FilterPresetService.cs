@@ -294,10 +294,12 @@ namespace Shrooms.Domain.Services.FilterPresets
                                      filter.OrganizationId == organizationId);
 
             // Change to non default
-            if (defaultFilter != null)
+            if (defaultFilter == null)
             {
-                defaultFilter.IsDefault = false;
+                return;
             }
+
+            defaultFilter.IsDefault = false;
         }
     }
 }

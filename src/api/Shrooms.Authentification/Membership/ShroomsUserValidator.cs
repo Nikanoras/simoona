@@ -72,20 +72,17 @@ namespace Shrooms.Authentification.Membership
             {
                 errors.Add(string.Format(CultureInfo.CurrentCulture, Resources.Models.Account.Account.PropertyTooShort, "Name"));
             }
+            else if (AllowOnlyAlphanumericUserNames && !Regex.IsMatch(user.UserName, "^[A-Za-z0-9@_\\.]+$"))
+            {
+                errors.Add(string.Format(CultureInfo.CurrentCulture, Resources.Models.Account.Account.InvalidUserName, user.UserName));
+            }
             else
             {
-                if (AllowOnlyAlphanumericUserNames && !Regex.IsMatch(user.UserName, "^[A-Za-z0-9@_\\.]+$"))
-                {
-                    errors.Add(string.Format(CultureInfo.CurrentCulture, Resources.Models.Account.Account.InvalidUserName, user.UserName));
-                }
-                else
-                {
-                    var foundUser = await UserManager.FindByNameAsync(user.UserName);
+                var foundUser = await UserManager.FindByNameAsync(user.UserName);
 
-                    if (foundUser != null && !string.Equals(foundUser.Id, user.Id))
-                    {
-                        errors.Add(string.Format(CultureInfo.CurrentCulture, Resources.Models.Account.Account.DuplicateName, user.UserName));
-                    }
+                if (foundUser != null && !string.Equals(foundUser.Id, user.Id))
+                {
+                    errors.Add(string.Format(CultureInfo.CurrentCulture, Resources.Models.Account.Account.DuplicateName, user.UserName));
                 }
             }
         }

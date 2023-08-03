@@ -75,10 +75,12 @@ namespace Shrooms.Domain.Services.Email.Posting
                 await SendWallSubscriberEmailsAsync(post, destinationEmails, postAuthor, organization, wall);
             }
 
-            if (mentionedUsers.Any())
+            if (!mentionedUsers.Any())
             {
-                await SendMentionerUserEmailsAsync(post.Id, postAuthor.FullName, mentionedUsers, organization.ShortName);
+                return;
             }
+
+            await SendMentionerUserEmailsAsync(post.Id, postAuthor.FullName, mentionedUsers, organization.ShortName);
         }
 
         public async Task NotifyMentionedUsersAsync(EditPostDto editPostDto)

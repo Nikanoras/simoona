@@ -29,10 +29,12 @@ namespace Shrooms.Domain.ServiceValidators.Validators.Wall
         private static void ValidateWallAccessibility(string userId, int? postWallId, Func<string, int, bool> hasUserAccessToWall)
         {
             //Check if post belongs to wall
-            if (postWallId.HasValue && !hasUserAccessToWall(userId, postWallId.Value))
+            if (!postWallId.HasValue || hasUserAccessToWall(userId, postWallId.Value))
             {
-                throw new ValidationException(ErrorCodes.UserIsNotAMemberOfWall, "Not permitted");
+                return;
             }
+
+            throw new ValidationException(ErrorCodes.UserIsNotAMemberOfWall, "Not permitted");
         }
 
         private bool CheckIfUserIsPartOfSubwall(string userId, int postWallId)

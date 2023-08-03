@@ -92,12 +92,7 @@ namespace Shrooms.Domain.Services.Organizations
             }
 
             var validEmailHostName = await GetOrganizationHostNameAsync(requestedOrganizationName);
-            if (GetHostFromEmail(email) != validEmailHostName)
-            {
-                return false;
-            }
-
-            return true;
+            return GetHostFromEmail(email) == validEmailHostName;
         }
 
         public async Task<bool> RequiresUserConfirmationAsync(int organizationId)

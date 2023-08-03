@@ -40,10 +40,12 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Lotteries
                 throw new LotteryException("Provided receivers were not found");
             }
 
-            if (foundReceiverIds.Contains(userOrg.UserId))
+            if (!foundReceiverIds.Contains(userOrg.UserId))
             {
-                throw new LotteryException("Cannot gift tickets to yourself");
+                return;
             }
+
+            throw new LotteryException("Cannot gift tickets to yourself");
         }
 
         public void CheckIfGiftedTicketLimitIsExceeded(LotteryDetailsBuyerDto buyerDto, int totalTicketCount)
@@ -53,34 +55,42 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Lotteries
                 throw new LotteryException($"Reached ticket limit");
             }
 
-            if (buyerDto.RemainingGiftedTicketCount < totalTicketCount)
+            if (buyerDto.RemainingGiftedTicketCount >= totalTicketCount)
             {
-                throw new LotteryException($"Can only gift {buyerDto.RemainingGiftedTicketCount} tickets");
+                return;
             }
+
+            throw new LotteryException($"Can only gift {buyerDto.RemainingGiftedTicketCount} tickets");
         }
 
         public void CheckIfBuyerExists(ApplicationUser buyerApplicationUser)
         {
-            if (buyerApplicationUser == null)
+            if (buyerApplicationUser != null)
             {
-                throw new LotteryException("Buyer was not found");
+                return;
             }
+
+            throw new LotteryException("Buyer was not found");
         }
 
         public void CheckIfLotteryExists(LotteryDetailsDto detailsDto)
         {
-            if (detailsDto == null)
+            if (detailsDto != null)
             {
-                throw GetLotteryNotFoundException();
+                return;
             }
+
+            throw GetLotteryNotFoundException();
         }
 
         public void CheckIfLotteryExists(Lottery lottery)
         {
-            if (lottery == null)
+            if (lottery != null)
             {
-                throw GetLotteryNotFoundException();
+                return;
             }
+
+            throw GetLotteryNotFoundException();
         }
 
         public void CheckIfLotteryEnded(LotteryDetailsDto detailsDto)
@@ -95,34 +105,42 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Lotteries
 
         public void CheckIfLotteryAllowsGifting(LotteryDetailsDto lotteryDetailsDto)
         {
-            if (lotteryDetailsDto.GiftedTicketLimit <= 0)
+            if (lotteryDetailsDto.GiftedTicketLimit > 0)
             {
-                throw new LotteryException("This lottery does not allow gifting tickets");
+                return;
             }
+
+            throw new LotteryException("This lottery does not allow gifting tickets");
         }
 
         public void CheckIfUserHasEnoughKudos(ApplicationUser buyerApplicationUser, int totalTicketCost)
         {
-            if (buyerApplicationUser.RemainingKudos < totalTicketCost)
+            if (buyerApplicationUser.RemainingKudos >= totalTicketCost)
             {
-                throw new LotteryException("User does not have enough kudos for the purchase.");
+                return;
             }
+
+            throw new LotteryException("User does not have enough kudos for the purchase.");
         }
 
         public void CheckIfLotteryIsDrafted(Lottery lottery)
         {
-            if (lottery.Status != LotteryStatus.Drafted)
+            if (lottery.Status == LotteryStatus.Drafted)
             {
-                throw new LotteryException("Lottery has to be drafted");
+                return;
             }
+
+            throw new LotteryException("Lottery has to be drafted");
         }
 
         public void CheckIfLotteryIsStarted(Lottery lottery)
         {
-            if (lottery.Status != LotteryStatus.Started)
+            if (lottery.Status == LotteryStatus.Started)
             {
-                throw new LotteryException("Lottery has to be started");
+                return;
             }
+
+            throw new LotteryException("Lottery has to be started");
         }
 
         public bool IsValidTicketCount(BuyLotteryTicketsDto buyLotteryTicketsDto)
@@ -132,10 +150,12 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Lotteries
 
         private void CheckIfLotteryEnded(DateTime endDate, string errorMessage)
         {
-            if (_systemClock.UtcNow > endDate)
+            if (_systemClock.UtcNow <= endDate)
             {
-                throw new LotteryException(errorMessage);
+                return;
             }
+
+            throw new LotteryException(errorMessage);
         }
 
         private static LotteryException GetLotteryNotFoundException()

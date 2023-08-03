@@ -9,18 +9,22 @@ namespace Shrooms.Domain.ServiceValidators.Validators.UserAdministration
     {
         public void CheckIfEmploymentDateIsSet(DateTime? employmentDate)
         {
-            if (!employmentDate.HasValue)
+            if (employmentDate.HasValue)
             {
-                throw new UserAdministrationException("Employment date is not valid");
+                return;
             }
+
+            throw new UserAdministrationException("Employment date is not valid");
         }
 
         public void CheckIfUserHasFirstLoginRole(bool hasRole)
         {
-            if (hasRole)
+            if (!hasRole)
             {
-                throw new UserAdministrationException("User has not filled info yet");
+                return;
             }
+
+            throw new UserAdministrationException("User has not filled info yet");
         }
 
         public void CheckForAddingRemovingRoleErrors(IList<string> addRoleErrors, IList<string> removeRoleErrors)

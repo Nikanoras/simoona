@@ -359,30 +359,36 @@ namespace Shrooms.Premium.Domain.Services.ServiceRequests
         {
             var isServiceRequestStatusIdCorrect = await _serviceRequestStatusDbSet.FirstOrDefaultAsync(x => x.Id == serviceRequest.StatusId);
 
-            if (isServiceRequestStatusIdCorrect == null)
+            if (isServiceRequestStatusIdCorrect != null)
             {
-                throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Service request status does not exist");
+                return;
             }
+
+            throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Service request status does not exist");
         }
 
         private async Task ValidateServiceRequestForCreateAsync(ServiceRequestDto newServiceRequest)
         {
             var isServiceRequestPriorityIdCorrect = await _serviceRequestPriorityDbSet.AnyAsync(x => x.Id == newServiceRequest.PriorityId);
 
-            if (!isServiceRequestPriorityIdCorrect)
+            if (isServiceRequestPriorityIdCorrect)
             {
-                throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Service request priority does not exist");
+                return;
             }
+
+            throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Service request priority does not exist");
         }
 
         private async Task ValidateCategoryNameAsync(string categoryName, int id = 0)
         {
             var isNameAlreadyUsed = await _serviceRequestCategoryDbSet.AnyAsync(x => x.Name == categoryName && x.Id != id);
 
-            if (isNameAlreadyUsed)
+            if (!isNameAlreadyUsed)
             {
-                throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "category name already exists");
+                return;
             }
+
+            throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "category name already exists");
         }
     }
 }

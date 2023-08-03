@@ -46,10 +46,12 @@ namespace Shrooms.Domain.Services.Events
 
         private static void CheckIfEventCountIsValid(int eventCount)
         {
-            if (eventCount < 1)
+            if (eventCount >= 1)
             {
-                throw new ArgumentException($"Argument '{nameof(eventCount)}' has to be greater than 0");
+                return;
             }
+
+            throw new ArgumentException($"Argument '{nameof(eventCount)}' has to be greater than 0");
         }
     }
 }

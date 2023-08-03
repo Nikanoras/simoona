@@ -84,11 +84,13 @@ namespace Shrooms.Domain.Services.ExternalLinks
                 })
                 .ToListAsync();
 
-            if (manageLinksDto.LinksToCreate.Any(c => externalLinks.Any(l => l.Name == c.Name || l.Url == c.Url)) ||
-                manageLinksDto.LinksToUpdate.Any(c => externalLinks.Any(l => (l.Name == c.Name || l.Url == c.Url) && l.Id != c.Id)))
+            if (!manageLinksDto.LinksToCreate.Any(c => externalLinks.Any(l => l.Name == c.Name || l.Url == c.Url)) &&
+                !manageLinksDto.LinksToUpdate.Any(c => externalLinks.Any(l => (l.Name == c.Name || l.Url == c.Url) && l.Id != c.Id)))
             {
-                throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Provided values must be unique");
+                return;
             }
+
+            throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Provided values must be unique");
         }
 
         private async Task CreateNewLinksAsync(ManageExternalLinkDto manageLinks, DateTime timestamp)

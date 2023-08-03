@@ -30,10 +30,12 @@ namespace Shrooms.Infrastructure.Storage.AzureBlob
         {
             var blockBlob = GetBlockBlob(blobKey, tenantPicturesContainer);
 
-            if (await blockBlob.ExistsAsync())
+            if (!await blockBlob.ExistsAsync())
             {
-                await blockBlob.DeleteAsync(DeleteSnapshotsOption.None, null, _blobRequestOptions, null);
+                return;
             }
+
+            await blockBlob.DeleteAsync(DeleteSnapshotsOption.None, null, _blobRequestOptions, null);
         }
 
         public async Task UploadPictureAsync(Image image, string blobKey, string mimeType, string tenantPicturesContainer)

@@ -9,34 +9,42 @@ namespace Shrooms.Domain.ServiceValidators.Validators.KudosBaskets
     {
         public void CheckIfThereIsNoBasketYet(KudosBasketDto basket)
         {
-            if (basket == null)
+            if (basket != null)
             {
-                throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketNotExists);
+                return;
             }
+
+            throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketNotExists);
         }
 
         public void CheckIfUserHasEnoughKudos(decimal remainingKudos, decimal donationAmount)
         {
-            if (remainingKudos < donationAmount)
+            if (remainingKudos >= donationAmount)
             {
-                throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketNotEnoughKudos);
+                return;
             }
+
+            throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketNotEnoughKudos);
         }
 
         public void CheckIfBasketIsActive(KudosBasket basket)
         {
-            if (!basket.IsActive)
+            if (basket.IsActive)
             {
-                throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketInactive);
+                return;
             }
+
+            throw new KudosBasketException(Resources.Widgets.KudosBasket.KudosBasket.KudosBasketInactive);
         }
 
         public void CheckIfBasketAlreadyExists(bool basketExists)
         {
-            if (basketExists)
+            if (!basketExists)
             {
-                throw new Exception("Kudos Basket already exists");
+                return;
             }
+
+            throw new Exception("Kudos Basket already exists");
         }
     }
 }

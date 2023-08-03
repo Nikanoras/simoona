@@ -65,11 +65,13 @@ namespace Shrooms.Domain.Services.RefreshTokens
         {
             var refreshToken = _refreshTokensDbSet.FirstOrDefault(filter);
 
-            if (refreshToken != null)
+            if (refreshToken == null)
             {
-                _refreshTokensDbSet.Remove(refreshToken);
-                await _uow.SaveChangesAsync(false);
+                return;
             }
+
+            _refreshTokensDbSet.Remove(refreshToken);
+            await _uow.SaveChangesAsync(false);
         }
     }
 }

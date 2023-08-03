@@ -410,10 +410,12 @@ namespace Shrooms.Premium.Domain.Services.Books
 
         private void ValidateQuantitiesValues(IEnumerable<int> quantities)
         {
-            if (quantities.Sum(bookQuantity => bookQuantity) <= 0)
+            if (quantities.Sum(bookQuantity => bookQuantity) > 0)
             {
-                _bookServiceValidator.CheckIfBookAllQuantitiesAreNotZero(false);
+                return;
             }
+
+            _bookServiceValidator.CheckIfBookAllQuantitiesAreNotZero(false);
         }
 
         private static void UpdateMetaFields(UserAndOrganizationDto userOrg, IEnumerable<BookOffice> bookOffices)

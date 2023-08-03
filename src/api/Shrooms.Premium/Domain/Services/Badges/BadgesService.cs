@@ -299,10 +299,12 @@ namespace Shrooms.Premium.Domain.Services.Badges
         private async Task SaveChangesAsync()
         {
             var response = await _uow.SaveChangesAsync();
-            if (response == 0)
+            if (response != 0)
             {
-                throw new ApplicationException("Changes could not be saved in BadgesService");
+                return;
             }
+
+            throw new ApplicationException("Changes could not be saved in BadgesService");
         }
     }
 }

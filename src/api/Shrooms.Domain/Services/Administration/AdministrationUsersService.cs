@@ -153,12 +153,14 @@ namespace Shrooms.Domain.Services.Administration
         public async Task AddProviderImageAsync(string userId, ClaimsIdentity externalIdentity)
         {
             var user = await _usersDbSet.FirstAsync(u => u.Id == userId);
-            if (user.PictureId == null && externalIdentity.FindFirst("picture") != null)
+            if (user.PictureId != null || externalIdentity.FindFirst("picture") == null)
             {
-                byte[] data = data = await new WebClient().DownloadDataTaskAsync(externalIdentity.FindFirst("picture").Value);
-                user.PictureId = await _pictureService.UploadFromStreamAsync(new MemoryStream(data), "image/jpeg", Guid.NewGuid() + ".jpg", user.OrganizationId);
-                await _uow.SaveChangesAsync(userId);
+                return;
             }
+
+            byte[] data = data = await new WebClient().DownloadDataTaskAsync(externalIdentity.FindFirst("picture").Value);
+            user.PictureId = await _pictureService.UploadFromStreamAsync(new MemoryStream(data), "image/jpeg", Guid.NewGuid() + ".jpg", user.OrganizationId);
+            await _uow.SaveChangesAsync(userId);
         }
 
         public async Task NotifyAboutNewUserAsync(ApplicationUser user, int orgId)

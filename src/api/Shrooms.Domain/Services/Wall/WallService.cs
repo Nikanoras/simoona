@@ -634,10 +634,12 @@ namespace Shrooms.Domain.Services.Wall
                 await _permissionService.UserHasPermissionAsync(userOrg, permission) :
                 await _permissionService.UserHasPermissionAsync(userOrg, eventPermission);
 
-            if (!hasRequiredPermission)
+            if (hasRequiredPermission)
             {
-                throw new UnauthorizedException();
+                return;
             }
+
+            throw new UnauthorizedException();
         }
 
         private static void JoinWall(string userId, MultiwallWall wall)
@@ -813,12 +815,12 @@ namespace Shrooms.Domain.Services.Wall
         private bool WallIsValid(UserAndOrganizationDto userOrg, int wallId)
         {
             var wallExists = _wallsDbSet.Any(w => w.Id == wallId && w.OrganizationId == userOrg.OrganizationId);
-            if (!wallExists)
+            if (wallExists)
             {
-                throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Wall not found");
+                return true;
             }
 
-            return true;
+            throw new ValidationException(ErrorCodes.ContentDoesNotExist, "Wall not found");
         }
 
         private async Task<IList<WallDto>> GetAllOrNotFollowedWallsAsync(UserAndOrganizationDto userOrg, WallsListFilter filter)
@@ -843,7 +845,7 @@ namespace Shrooms.Domain.Services.Wall
                     Name = w.Name,
                     Description = w.Description,
                     // Don't simplify, since it's EF projection
-                    IsFollowing = w.Type == WallType.Main ? true : w.Members.Any(m => m.UserId == userOrg.UserId),
+                    IsFollowing = w.Type == WallType.Main || w.Members.Any(m => m.UserId == userOrg.UserId),
                     Type = w.Type,
                     Logo = w.Logo
                 })
