@@ -88,7 +88,6 @@ csharp_style_expression_bodied_local_functions = false:silent
 csharp_style_throw_expression = true:suggestion
 csharp_style_prefer_null_check_over_type_check = true:suggestion
 
-dotnet_diagnostic.RCS1002.severity = suggestion
 dotnet_diagnostic.RCS1003.severity = suggestion
 dotnet_diagnostic.RCS1005.severity = suggestion
 dotnet_diagnostic.RCS1006.severity = suggestion
@@ -167,6 +166,7 @@ dotnet_diagnostic.RCS9008.severity = silent
 dotnet_diagnostic.RCS9009.severity = silent
 dotnet_diagnostic.RCS9011.severity = silent
 dotnet_diagnostic.RCS1001.severity = silent
+dotnet_diagnostic.RCS1002.severity = silent
 dotnet_diagnostic.RCS1013.severity = silent
 dotnet_diagnostic.RCS1014.severity = silent
 dotnet_diagnostic.RCS1015.severity = silent
