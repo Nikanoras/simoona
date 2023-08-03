@@ -226,22 +226,6 @@
     <Analyzer Include="..\packages\Roslynator.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Analyzers_Roslynator.CSharp.Workspaces.dll" />
     <Analyzer Include="..\packages\Roslynator.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Analyzers_Roslynator.Workspaces.Common.dll" />
     <Analyzer Include="..\packages\Roslynator.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Analyzers_Roslynator.Workspaces.Core.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator.CodeAnalysis.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.Common.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.Core.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.CSharp.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.CSharp.Workspaces.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.Workspaces.Common.dll" />
-    <Analyzer Include="..\packages\Roslynator.CodeAnalysis.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_CodeAnalysis_Analyzers_Roslynator.Workspaces.Core.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator.Formatting.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator.Formatting.Analyzers.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.Common.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.Core.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.CSharp.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.CSharp.Workspaces.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.Workspaces.Common.dll" />
-    <Analyzer Include="..\packages\Roslynator.Formatting.Analyzers.4.4.0\analyzers\dotnet\cs\Roslynator_Formatting_Analyzers_Roslynator.Workspaces.Core.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
