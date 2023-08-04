@@ -233,12 +233,10 @@ namespace Shrooms.Premium.Domain.Services.Events.Utilities
             var nameAlreadyExists = await _eventTypesDbSet
                             .AnyAsync(x => x.OrganizationId == organizationId && x.Name == eventTypeName);
 
-            if (!nameAlreadyExists)
+            if (nameAlreadyExists)
             {
-                return;
+                throw new ValidationException(PremiumErrorCodes.EventTypeNameAlreadyExists, "Event type name should be unique");
             }
-
-            throw new ValidationException(PremiumErrorCodes.EventTypeNameAlreadyExists, "Event type name should be unique");
         }
 
         private static EventType MapNewEventType(CreateEventTypeDto eventTypeDto)

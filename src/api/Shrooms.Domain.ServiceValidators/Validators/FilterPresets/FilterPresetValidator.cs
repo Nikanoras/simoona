@@ -32,24 +32,20 @@ namespace Shrooms.Domain.ServiceValidators.Validators.FilterPresets
 
         public void CheckIfPageTypeExists(PageType page)
         {
-            if (Enum.IsDefined(typeof(PageType), page))
+            if (!Enum.IsDefined(typeof(PageType), page))
             {
-                return;
+                throw new ValidationException(ErrorCodes.InvalidType, "Page does not exists");
             }
-
-            throw new ValidationException(ErrorCodes.InvalidType, "Page does not exists");
         }
 
         public void CheckIfFilterTypesContainDuplicates(FilterType[] filterTypes)
         {
             var length = filterTypes.Length;
 
-            if (filterTypes.Distinct().Count() == length)
+            if (filterTypes.Distinct().Count() != length)
             {
-                return;
+                throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Duplicates are not allowed");
             }
-
-            throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Duplicates are not allowed");
         }
 
         public void CheckIfMoreThanOneDefaultPresetExists(ManageFilterPresetDto manageFilterPresetDto)
@@ -62,39 +58,33 @@ namespace Shrooms.Domain.ServiceValidators.Validators.FilterPresets
                 .Where(preset => preset.IsDefault)
                 .ToList();
 
-            if (defaultPresetExistsInNewPresets.Count <= 1 &&
-                defaultPresetExistsInUpdatedPresets.Count <= 1 &&
-                (defaultPresetExistsInNewPresets.Count <= 0 || defaultPresetExistsInUpdatedPresets.Count <= 0))
+            if (defaultPresetExistsInNewPresets.Count > 1 ||
+                defaultPresetExistsInUpdatedPresets.Count > 1 ||
+                (defaultPresetExistsInNewPresets.Count > 0 && defaultPresetExistsInUpdatedPresets.Count > 0))
             {
-                return;
+                throw new ValidationException(ErrorCodes.FilterPresetContainsMoreThanOneDefaultPreset,
+                    "Cannot have more than one default preset");
             }
-
-            throw new ValidationException(ErrorCodes.FilterPresetContainsMoreThanOneDefaultPreset,
-                "Cannot have more than one default preset");
         }
 
         public void CheckIfCountsAreEqual<T1, T2>(T1 firstCollection, T2 secondCollection)
             where T1 : ICollection
             where T2 : ICollection
         {
-            if (firstCollection.Count == secondCollection.Count)
+            if (firstCollection.Count != secondCollection.Count)
             {
-                return;
+                throw new ValidationException(ErrorCodes.FilterNotFound, "Filter does not exists");
             }
-
-            throw new ValidationException(ErrorCodes.FilterNotFound, "Filter does not exists");
         }
 
         public void CheckIfFilterPresetsContainUniqueNames(IEnumerable<FilterPresetDto> filterPresetDtos)
         {
             var presetDtos = filterPresetDtos.ToList();
 
-            if (presetDtos.GroupBy(preset => preset.Name).Count() == presetDtos.Count())
+            if (presetDtos.GroupBy(preset => preset.Name).Count() != presetDtos.Count())
             {
-                return;
+                throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Preset names cannot contain duplicates");
             }
-
-            throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "Preset names cannot contain duplicates");
         }
 
         public async Task CheckIfUpdatedAndAddedPresetsHaveUniqueNamesExcludingDeletedPresetsAsync(ManageFilterPresetDto manageFilterPresetDto, IEnumerable<FilterPresetDto> removedPresets)
@@ -167,12 +157,10 @@ namespace Shrooms.Domain.ServiceValidators.Validators.FilterPresets
 
         private void CheckIfFilterTypeIsValid(FilterType filterType)
         {
-            if (Enum.IsDefined(typeof(FilterType), filterType))
+            if (!Enum.IsDefined(typeof(FilterType), filterType))
             {
-                return;
+                throw new ValidationException(ErrorCodes.InvalidType, "Filter does not exists");
             }
-
-            throw new ValidationException(ErrorCodes.InvalidType, "Filter does not exists");
         }
 
         private IQueryable<string> GetTypeIdQueryByFilterType(FilterType filterType, int organizationId)

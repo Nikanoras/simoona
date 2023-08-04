@@ -76,12 +76,12 @@ namespace Shrooms.Authentification.Membership
         public override async Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login)
         {
             var user = await FindAsync(login);
-            if (user != null)
+            if (user == null)
             {
-                return null;
+                return await base.AddLoginAsync(userId, login);
             }
 
-            return await base.AddLoginAsync(userId, login);
+            return null;
         }
     }
 }

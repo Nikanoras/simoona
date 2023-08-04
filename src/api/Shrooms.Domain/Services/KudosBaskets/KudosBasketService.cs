@@ -216,19 +216,24 @@ namespace Shrooms.Domain.Services.KudosBaskets
 
         private static KudosBasketLogUserDto MapUserToDto(ApplicationUser employee)
         {
+            KudosBasketLogUserDto userDto;
             if (employee == null)
             {
-                return new KudosBasketLogUserDto
+                userDto = new KudosBasketLogUserDto
                 {
                     FullName = BusinessLayerConstants.DeletedUserName
                 };
             }
-
-            return new KudosBasketLogUserDto
+            else
             {
-                Id = employee.Id,
-                FullName = $"{employee.FirstName} {employee.LastName}"
-            };
+                userDto = new KudosBasketLogUserDto
+                {
+                    Id = employee.Id,
+                    FullName = $"{employee.FirstName} {employee.LastName}"
+                };
+            }
+
+            return userDto;
         }
     }
 }

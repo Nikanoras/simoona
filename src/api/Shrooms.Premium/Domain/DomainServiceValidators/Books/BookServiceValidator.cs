@@ -8,62 +8,50 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Books
     {
         public void CheckIfBookAlreadyExists(bool alreadyExists)
         {
-            if (!alreadyExists)
+            if (alreadyExists)
             {
-                return;
+                throw new BookException(ErrorCodes.BookAlreadyExistsCode);
             }
-
-            throw new BookException(ErrorCodes.BookAlreadyExistsCode);
         }
 
         public void CheckIfBookAllQuantitiesAreNotZero(bool allQuantitiesNotZero)
         {
-            if (allQuantitiesNotZero != false)
+            if (allQuantitiesNotZero == false)
             {
-                return;
+                throw new BookException(ErrorCodes.BoolAllQuantitiesAreZeroCode);
             }
-
-            throw new BookException(ErrorCodes.BoolAllQuantitiesAreZeroCode);
         }
 
         public void CheckIfRequestedOfficesExist(bool officeIsValid)
         {
-            if (officeIsValid)
+            if (!officeIsValid)
             {
-                return;
+                throw new ArgumentException("Incorrect offices provided while creating new book");
             }
-
-            throw new ArgumentException("Incorrect offices provided while creating new book");
         }
 
         public void CheckIfBookOfficesFoundWhileDeleting(bool booksWereFound)
         {
-            if (booksWereFound)
+            if (!booksWereFound)
             {
-                return;
+                throw new ArgumentException("Book was not found while deleting");
             }
-
-            throw new ArgumentException("Book was not found while deleting");
         }
 
         public void CheckIfBookWasFoundByIsbnFromExternalProvider(object book)
         {
-            if (book != null)
+            if (book == null)
             {
-                return;
+                throw new BookException(ErrorCodes.BookNotFoundByExternalProviderCode);
             }
-
-            throw new BookException(ErrorCodes.BookNotFoundByExternalProviderCode);
         }
 
         public void ThrowIfBookCannotBeReturned(bool bookExists)
         {
-            if (bookExists)
+            if (!bookExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.BookCannotBeReturned);
             }
-
-            throw new BookException(Resources.Models.Books.Books.BookCannotBeReturned);
         }
     }
 }

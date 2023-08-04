@@ -90,7 +90,12 @@ namespace Shrooms.Premium.Domain.Services.Books
             var book = _bookDbSet
                 .Where(b => b.Code == code && b.OrganizationId == organizationId)
                 .Select(MapBookToBookMobileGetForPostDto())
-                .FirstOrDefault() ?? await GetInfoFromExternalApiAsync(code);
+                .FirstOrDefault();
+
+            if (book == null)
+            {
+                book = await GetInfoFromExternalApiAsync(code);
+            }
 
             return book;
         }
@@ -212,7 +217,7 @@ namespace Shrooms.Premium.Domain.Services.Books
         {
             var bookExistsInChosenOffice = book
                                 .BookOffices
-                                .Any(l => l.OfficeId == bookDto.OfficeId);
+                                .Any((l => l.OfficeId == bookDto.OfficeId));
 
             _serviceValidator.ThrowIfBookExist(bookExistsInChosenOffice);
 

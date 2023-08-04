@@ -10,32 +10,26 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Books
     {
         public void ThrowIfBookExist(bool bookExists)
         {
-            if (!bookExists)
+            if (bookExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.BookAlreadyExist);
             }
-
-            throw new BookException(Resources.Models.Books.Books.BookAlreadyExist);
         }
 
         public void ThrowIfBookDoesNotExist(bool bookExists)
         {
-            if (bookExists)
+            if (!bookExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.NoBook);
             }
-
-            throw new BookException(Resources.Models.Books.Books.NoBook);
         }
 
         public void ThrowIfThereIsNoBookToReturn(bool bookExists)
         {
-            if (bookExists)
+            if (!bookExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.NoBooksToReturn);
             }
-
-            throw new BookException(Resources.Models.Books.Books.NoBooksToReturn);
         }
 
         public void ChecksIfUserHasAlreadyBorrowedSameBook(IEnumerable<string> borrowedBookUserIds, string applicationUserId)
@@ -46,22 +40,18 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Books
             }
 
             var bookAlreadyBorrowed = borrowedBookUserIds.Contains(applicationUserId);
-            if (!bookAlreadyBorrowed)
+            if (bookAlreadyBorrowed)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.UserAlreadyHasSameBook);
             }
-
-            throw new BookException(Resources.Models.Books.Books.UserAlreadyHasSameBook);
         }
 
         public void ThrowIfOfficeDoesNotExist(bool officeExists)
         {
-            if (officeExists)
+            if (!officeExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.NoOffice);
             }
-
-            throw new BookException(Resources.Models.Books.Books.NoOffice);
         }
 
         public void ThrowIfBookIsAlreadyBorrowed(MobileBookOfficeLogsDto officeBookWithLogs)
@@ -73,32 +63,26 @@ namespace Shrooms.Premium.Domain.DomainServiceValidators.Books
 
             var availableBooks = officeBookWithLogs.Quantity - officeBookWithLogs.LogsUserIDs.Count();
 
-            if (availableBooks >= 1)
+            if (availableBooks < 1)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.NoAvailableBooks);
             }
-
-            throw new BookException(Resources.Models.Books.Books.NoAvailableBooks);
         }
 
         public void ThrowIfUserDoesNotExist(ApplicationUser applicationUser)
         {
-            if (applicationUser != null)
+            if (applicationUser == null)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.UserDoesNotExist);
             }
-
-            throw new BookException(Resources.Models.Books.Books.UserDoesNotExist);
         }
 
         public void ThrowIfBookDoesNotExistGoogleApi(bool bookExists)
         {
-            if (bookExists)
+            if (!bookExists)
             {
-                return;
+                throw new BookException(Resources.Models.Books.Books.NoBooksInGoogleApi);
             }
-
-            throw new BookException(Resources.Models.Books.Books.NoBooksInGoogleApi);
         }
     }
 }

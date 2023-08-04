@@ -86,12 +86,10 @@ namespace Shrooms.DataLayer.EntityModels.Models.Kudos
 
         private void ValidateStatusPending()
         {
-            if (Status == KudosStatus.Pending)
+            if (Status != KudosStatus.Pending)
             {
-                return;
+                throw new ValidationException(ErrorCodes.KudosAlreadyApproved, "Kudos log is already approved");
             }
-
-            throw new ValidationException(ErrorCodes.KudosAlreadyApproved, "Kudos log is already approved");
         }
     }
 }

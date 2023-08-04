@@ -48,7 +48,12 @@ namespace Shrooms.Premium.Presentation.Api.Controllers
                 return await GetByFloor(userOfficeAndFloor.FloorId.Value);
             }
 
-            var office = _officeRepository.Get(o => o.IsDefault).FirstOrDefault() ?? _officeRepository.Get().FirstOrDefault();
+            var office = _officeRepository.Get(o => o.IsDefault).FirstOrDefault();
+
+            if (office == null)
+            {
+                office = _officeRepository.Get().FirstOrDefault();
+            }
 
             if (office != null)
             {

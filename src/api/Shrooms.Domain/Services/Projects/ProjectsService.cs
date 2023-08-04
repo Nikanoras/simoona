@@ -338,7 +338,12 @@ namespace Shrooms.Domain.Services.Projects
                 return false;
             }
 
-            return manager.ManagerId == null || (manager.Id == manager.ManagerId && manager.UserName == DataLayerConstants.OrganizationManagerUsername);
+            if (manager.ManagerId == null || (manager.Id == manager.ManagerId && manager.UserName == DataLayerConstants.OrganizationManagerUsername))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private async Task UpdateWallAsync(EditProjectDto dto, int wallId)
@@ -422,24 +427,20 @@ namespace Shrooms.Domain.Services.Projects
             var hasProjectAdminPermission = await _permissionService.UserHasPermissionAsync(userAndOrg, AdministrationPermissions.Project);
             var isProjectOwner = project.OwnerId == userAndOrg.UserId;
 
-            if (isProjectOwner || hasProjectAdminPermission)
+            if (!(isProjectOwner || hasProjectAdminPermission))
             {
-                return;
+                throw new UnauthorizedException();
             }
-
-            throw new UnauthorizedException();
         }
 
         private async Task ValidateOwnershipPermissionsAsync(string ownerId, UserAndOrganizationDto userOrg)
         {
             var isAdministrator = await _permissionService.UserHasPermissionAsync(userOrg, AdministrationPermissions.Project);
 
-            if (ownerId == userOrg.UserId || isAdministrator)
+            if (ownerId != userOrg.UserId && !isAdministrator)
             {
-                return;
+                throw new UnauthorizedException();
             }
-
-            throw new UnauthorizedException();
         }
     }
 }

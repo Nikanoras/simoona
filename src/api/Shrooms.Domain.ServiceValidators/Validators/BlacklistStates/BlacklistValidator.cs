@@ -22,33 +22,27 @@ namespace Shrooms.Domain.ServiceValidators.Validators.BlacklistStates
 
         public void CheckIfBlacklistUserExists(BlacklistUser blacklistUser)
         {
-            if (blacklistUser != null)
+            if (blacklistUser == null)
             {
-                return;
+                throw new ValidationException(ErrorCodes.BlacklistEntryNotFound, "Blacklist entry not found");
             }
-
-            throw new ValidationException(ErrorCodes.BlacklistEntryNotFound, "Blacklist entry not found");
         }
 
         public async Task CheckIfUserExistsAsync(string userId, UserAndOrganizationDto userOrg)
         {
-            if (await _applicationUsersDbSet.AnyAsync(user => user.Id == userId && user.OrganizationId == userOrg.OrganizationId))
+            if (!await _applicationUsersDbSet.AnyAsync(user => user.Id == userId && user.OrganizationId == userOrg.OrganizationId))
             {
-                return;
+                throw new ValidationException(ErrorCodes.UserNotFound, "User not found");
             }
-
-            throw new ValidationException(ErrorCodes.UserNotFound, "User not found");
         }
 
         public async Task CheckIfUserIsAlreadyBlacklistedAsync(string userId, UserAndOrganizationDto userOrg)
         {
-            if (!await _blacklistUsersDbSet.AnyAsync(blacklist => blacklist.UserId == userId &&
+            if (await _blacklistUsersDbSet.AnyAsync(blacklist => blacklist.UserId == userId &&
                                                                   blacklist.Status == BlacklistStatus.Active))
             {
-                return;
+                throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "User is already blacklisted");
             }
-
-            throw new ValidationException(ErrorCodes.DuplicatesIntolerable, "User is already blacklisted");
         }
     }
 }

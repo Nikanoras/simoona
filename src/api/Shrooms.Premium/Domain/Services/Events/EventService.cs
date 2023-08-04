@@ -245,25 +245,21 @@ namespace Shrooms.Premium.Domain.Services.Events
                 await _eventParticipationService.ResetAttendeesAsync(@event, eventDto);
             }
 
-            if (!eventDto.ResetVirtualParticipantList)
+            if (eventDto.ResetVirtualParticipantList)
             {
-                return;
+                await _eventParticipationService.ResetVirtualAttendeesAsync(@event, eventDto);
             }
-
-            await _eventParticipationService.ResetVirtualAttendeesAsync(@event, eventDto);
         }
 
         public async Task ToggleEventPinAsync(Guid id)
         {
             var @event = await _eventsDbSet.FindAsync(id);
 
-            if (@event == null)
+            if (@event != null)
             {
-                return;
+                @event.IsPinned = !@event.IsPinned;
+                await _uow.SaveChangesAsync();
             }
-
-            @event.IsPinned = !@event.IsPinned;
-            await _uow.SaveChangesAsync();
         }
 
         public async Task CheckIfEventExistsAsync(string eventId, int organizationId)
@@ -383,12 +379,10 @@ namespace Shrooms.Premium.Domain.Services.Events
                 await _wallService.JoinOrLeaveWallAsync(currentEvent.WallId, updatedEvent.ResponsibleUserId, updatedEvent.ResponsibleUserId, updatedEvent.OrganizationId, true);
             }
 
-            if (currentHostIsParticipating)
+            if (!currentHostIsParticipating)
             {
-                return;
+                await _wallService.JoinOrLeaveWallAsync(currentEvent.WallId, currentEvent.ResponsibleUserId, currentEvent.ResponsibleUserId, updatedEvent.OrganizationId, true);
             }
-
-            await _wallService.JoinOrLeaveWallAsync(currentEvent.WallId, currentEvent.ResponsibleUserId, currentEvent.ResponsibleUserId, updatedEvent.OrganizationId, true);
         }
 
         private async Task ValidateEvent(IEventArgsDto eventDto)
@@ -630,12 +624,10 @@ namespace Shrooms.Premium.Domain.Services.Events
 
         private static void UpdateEventReminderStart(EventReminder reminderToUpdate, IEventArgsDto eventArgsDto, Event @event)
         {
-            if (eventArgsDto.StartDate == @event.StartDate)
+            if (eventArgsDto.StartDate != @event.StartDate)
             {
-                return;
+                reminderToUpdate.IsReminded = false;
             }
-
-            reminderToUpdate.IsReminded = false;
         }
 
         private static void UpdateEventReminderDeadline(EventReminder reminderToUpdate, IEventArgsDto eventArgsDto, Event @event)

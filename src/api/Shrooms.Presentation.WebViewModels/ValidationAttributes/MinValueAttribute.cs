@@ -15,7 +15,12 @@ namespace Shrooms.Presentation.WebViewModels.ValidationAttributes
 
         public override bool IsValid(object value)
         {
-            return _minValue <= (int)value;
+            if (_minValue <= (int)value)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public override string FormatErrorMessage(string name)

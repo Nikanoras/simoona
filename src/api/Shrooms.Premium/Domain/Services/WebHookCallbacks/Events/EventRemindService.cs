@@ -79,12 +79,10 @@ namespace Shrooms.Premium.Domain.Services.WebHookCallbacks.Events
                 await _notificationService.CreateForEventJoinReminderAsync(usersToNotifyInApp, organization.Id);
             }
 
-            if (!usersToNotifyEmail.Any())
+            if (usersToNotifyEmail.Any())
             {
-                return;
+                await _eventNotificationService.RemindUsersToJoinEventAsync(typesToNotifyAbout, usersToNotifyEmail, organization.Id);
             }
-
-            await _eventNotificationService.RemindUsersToJoinEventAsync(typesToNotifyAbout, usersToNotifyEmail, organization.Id);
         }
 
         private async Task<Organization> GetOrganizationAsync(string organizationName)

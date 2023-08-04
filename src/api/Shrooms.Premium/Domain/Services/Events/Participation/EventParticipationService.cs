@@ -109,12 +109,10 @@ namespace Shrooms.Premium.Domain.Services.Events.Participation
         {
             SendEventInvitations(joinDto, eventDto);
 
-            if (!eventDto.SendEmailToManager)
+            if (eventDto.SendEmailToManager)
             {
-                return;
+                NotifyManagersAfterJoin(eventDto, firstTimeParticipants);
             }
-
-            NotifyManagersAfterJoin(eventDto, firstTimeParticipants);
         }
 
         private async Task<List<ApplicationUser>> GetUsersFromParticipantIdsAsync(ICollection<string> participantIds)
