@@ -899,12 +899,7 @@ namespace Shrooms.Domain.Services.Kudos
                 return false;
             }
 
-            if (kudosServiceRequestCategory == null)
-            {
-                return false;
-            }
-
-            return true;
+            return kudosServiceRequestCategory != null;
         }
 
         public async Task<WelcomeKudosDto> GetWelcomeKudosAsync()

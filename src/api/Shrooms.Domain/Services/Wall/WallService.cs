@@ -843,7 +843,7 @@ namespace Shrooms.Domain.Services.Wall
                     Name = w.Name,
                     Description = w.Description,
                     // Don't simplify, since it's EF projection
-                    IsFollowing = w.Type == WallType.Main ? true : w.Members.Any(m => m.UserId == userOrg.UserId),
+                    IsFollowing = w.Type == WallType.Main || w.Members.Any(m => m.UserId == userOrg.UserId),
                     Type = w.Type,
                     Logo = w.Logo
                 })

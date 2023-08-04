@@ -338,12 +338,7 @@ namespace Shrooms.Domain.Services.Projects
                 return false;
             }
 
-            if (manager.ManagerId == null || (manager.Id == manager.ManagerId && manager.UserName == DataLayerConstants.OrganizationManagerUsername))
-            {
-                return true;
-            }
-
-            return false;
+            return manager.ManagerId == null || (manager.Id == manager.ManagerId && manager.UserName == DataLayerConstants.OrganizationManagerUsername);
         }
 
         private async Task UpdateWallAsync(EditProjectDto dto, int wallId)
